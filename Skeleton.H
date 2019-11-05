@@ -1,5 +1,5 @@
-#ifndef SKELETON_HEADER
-#define SKELETON_HEADER
+#ifndef SKELETON_HEADER_JWC
+#define SKELETON_HEADER_JWC
 /* You might want to change the above name. */
 
 #include "Absyn.H"
@@ -28,6 +28,9 @@ public:
   void visitString(String x);
   void visitIdent(Ident x);
 
+//TODO probably some protected store map
+//TODO stack counter?
+//TODO current result (string)
 };
 
 

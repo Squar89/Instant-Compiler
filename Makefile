@@ -1,5 +1,5 @@
 CC=g++
-CCFLAGS=-g -W -Wall
+CCFLAGS=-g -W -Wall -std=c++11
 
 FLEX=flex
 FLEX_OPTS=-PInstantLanguage
@@ -7,17 +7,20 @@ FLEX_OPTS=-PInstantLanguage
 BISON=bison
 BISON_OPTS=-t -pInstantLanguage
 
-OBJS=Absyn.o Lexer.o Parser.o Printer.o
+OBJS=Absyn.o Lexer.o Parser.o Printer.o Skeleton.o
 
 .PHONY: clean distclean
 
-all: TestInstantLanguage
+all: Jwc
 
 clean:
-	rm -f *.o TestInstantLanguage InstantLanguage.aux InstantLanguage.log InstantLanguage.pdf InstantLanguage.dvi InstantLanguage.ps InstantLanguage
+	rm -f *.o TestInstantLanguage InstantLanguage.aux InstantLanguage.log InstantLanguage.pdf InstantLanguage.dvi InstantLanguage.ps InstantLanguage jwc
 
 distclean: clean
 	rm -f Absyn.C Absyn.H Test.C Parser.C Parser.H Lexer.C Skeleton.C Skeleton.H Printer.C Printer.H Makefile InstantLanguage.l InstantLanguage.y InstantLanguage.tex 
+
+Jwc: ${OBJS} Jwc.o
+	${CC} ${CCFLAGS} ${OBJS} Jwc.o -o jwc
 
 TestInstantLanguage: ${OBJS} Test.o
 	@echo "Linking TestInstantLanguage..."
