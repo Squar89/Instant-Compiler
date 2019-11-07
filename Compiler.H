@@ -8,27 +8,27 @@
 class Compiler : public Visitor
 {
 public:
-  char *compile(Visitable *v);
+  virtual char *compile(Visitable *v) = 0;
 
-  void visitProgram(Program *p);
-  void visitStmt(Stmt *p);
-  void visitExp(Exp *p);
-  void visitProg(Prog *p);
-  void visitSAss(SAss *p);
-  void visitSExp(SExp *p);
-  void visitExpAdd(ExpAdd *p);
-  void visitExpSub(ExpSub *p);
-  void visitExpMul(ExpMul *p);
-  void visitExpDiv(ExpDiv *p);
-  void visitExpLit(ExpLit *p);
-  void visitExpVar(ExpVar *p);
-  void visitListStmt(ListStmt *p);
+  virtual void visitProgram(Program *p) = 0;
+  virtual void visitStmt(Stmt *p) = 0;
+  virtual void visitExp(Exp *p) = 0;
+  virtual void visitProg(Prog *p) = 0;
+  virtual void visitSAss(SAss *p) = 0;
+  virtual void visitSExp(SExp *p) = 0;
+  virtual void visitExpAdd(ExpAdd *p) = 0;
+  virtual void visitExpSub(ExpSub *p) = 0;
+  virtual void visitExpMul(ExpMul *p) = 0;
+  virtual void visitExpDiv(ExpDiv *p) = 0;
+  virtual void visitExpLit(ExpLit *p) = 0;
+  virtual void visitExpVar(ExpVar *p) = 0;
+  virtual void visitListStmt(ListStmt *p) = 0;
 
-  void visitInteger(Integer x);
-  void visitChar(Char x);
-  void visitDouble(Double x);
-  void visitString(String x);
-  void visitIdent(Ident x);
+  virtual void visitInteger(Integer x) = 0;
+  virtual void visitChar(Char x) = 0;
+  virtual void visitDouble(Double x) = 0;
+  virtual void visitString(String x) = 0;
+  virtual void visitIdent(Ident x) = 0;
 
 /* buffer and functions related to buffer storing result */
 protected:

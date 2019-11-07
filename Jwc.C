@@ -1,5 +1,5 @@
-#include <stdio.h>
-#include <string.h>
+#include <cstdio>
+#include <string>
 #include "Parser.H"
 #include "Printer.H"
 #include "Compiler.H"
@@ -23,7 +23,7 @@ void usage() {
 }
 
 int main(int argc, char ** argv) {
-  int destLanguage;
+  int destLanguage = JVM_OPTION;
   FILE *input;
   char *fileName = NULL;
   char *result;
@@ -55,9 +55,13 @@ int main(int argc, char ** argv) {
       input = stdin;
     }
   }
+  else {
+    input = stdin;
+  }
 
   /* parse the supplied input into a Program variable */
   Program *parseTree = pProgram(input);
+  /*
   if (parseTree) {
     printf("\nParse Succesful!\n");
     printf("\n[Abstract Syntax]\n");
@@ -67,16 +71,17 @@ int main(int argc, char ** argv) {
     PrintAbsyn *p = new PrintAbsyn();
     printf("%s\n\n", p->print(parseTree));
   }
+  */
 
   /* Setup our compiler and compile parsed input */
   if (destLanguage == JVM_OPTION) {
     compiler = new CompilerJVM();
   }
   else /* destLanguage == LLVM_OPTION */ {
-    compiler = new CompilerLLVM();
+    compiler = new CompilerJVM();
   }
   result = compiler->compile(parseTree);
-
+  
   printf("%s", result);
 
 

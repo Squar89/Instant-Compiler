@@ -7,16 +7,20 @@
 #include "Compiler.H"
 #include "CompilerJVM.H"
 
-char *Compiler::compile(Visitable *v) {
+char *CompilerJVM::compile(Visitable *v) {
+  bufReset();
+  bufAppend(header);
+
   //TODO
+
   return buf_;
 }
 
-void Compiler::visitProgram(Program *t) {} //abstract class
-void Compiler::visitStmt(Stmt *t) {} //abstract class
-void Compiler::visitExp(Exp *t) {} //abstract class
+void CompilerJVM::visitProgram(Program *t) {} //abstract class
+void CompilerJVM::visitStmt(Stmt *t) {} //abstract class
+void CompilerJVM::visitExp(Exp *t) {} //abstract class
 
-void Compiler::visitProg(Prog *prog)
+void CompilerJVM::visitProg(Prog *prog)
 {
   /* Code For Prog Goes Here */
   printf("Hello World from Prog!\n");
@@ -25,7 +29,7 @@ void Compiler::visitProg(Prog *prog)
 
 }
 
-void Compiler::visitSAss(SAss *s_ass)
+void CompilerJVM::visitSAss(SAss *s_ass)
 {
   /* Code For SAss Goes Here */
   printf("Hello World from SAss!\n");
@@ -35,7 +39,7 @@ void Compiler::visitSAss(SAss *s_ass)
 
 }
 
-void Compiler::visitSExp(SExp *s_exp)
+void CompilerJVM::visitSExp(SExp *s_exp)
 {
   /* Code For SExp Goes Here */
   printf("Hello World from SExp!\n");
@@ -44,7 +48,7 @@ void Compiler::visitSExp(SExp *s_exp)
 
 }
 
-void Compiler::visitExpAdd(ExpAdd *exp_add)
+void CompilerJVM::visitExpAdd(ExpAdd *exp_add)
 {
   /* Code For ExpAdd Goes Here */
   printf("Hello World from ExpAdd!\n");
@@ -54,7 +58,7 @@ void Compiler::visitExpAdd(ExpAdd *exp_add)
 
 }
 
-void Compiler::visitExpSub(ExpSub *exp_sub)
+void CompilerJVM::visitExpSub(ExpSub *exp_sub)
 {
   /* Code For ExpSub Goes Here */
   printf("Hello World from ExpSub!\n");
@@ -64,7 +68,7 @@ void Compiler::visitExpSub(ExpSub *exp_sub)
 
 }
 
-void Compiler::visitExpMul(ExpMul *exp_mul)
+void CompilerJVM::visitExpMul(ExpMul *exp_mul)
 {
   /* Code For ExpMul Goes Here */
   printf("Hello World from ExpMul!\n");
@@ -74,7 +78,7 @@ void Compiler::visitExpMul(ExpMul *exp_mul)
 
 }
 
-void Compiler::visitExpDiv(ExpDiv *exp_div)
+void CompilerJVM::visitExpDiv(ExpDiv *exp_div)
 {
   /* Code For ExpDiv Goes Here */
   printf("Hello World from ExpDiv!\n");
@@ -84,7 +88,7 @@ void Compiler::visitExpDiv(ExpDiv *exp_div)
 
 }
 
-void Compiler::visitExpLit(ExpLit *exp_lit)
+void CompilerJVM::visitExpLit(ExpLit *exp_lit)
 {
   /* Code For ExpLit Goes Here */
   printf("Hello World from ExpLit!\n");
@@ -93,7 +97,7 @@ void Compiler::visitExpLit(ExpLit *exp_lit)
 
 }
 
-void Compiler::visitExpVar(ExpVar *exp_var)
+void CompilerJVM::visitExpVar(ExpVar *exp_var)
 {
   /* Code For ExpVar Goes Here */
   printf("Hello World from ExpVar!\n");
@@ -103,7 +107,7 @@ void Compiler::visitExpVar(ExpVar *exp_var)
 }
 
 
-void Compiler::visitListStmt(ListStmt *list_stmt)
+void CompilerJVM::visitListStmt(ListStmt *list_stmt)
 {
   printf("Hello World from ListStmt!\n");
   for (ListStmt::iterator i = list_stmt->begin() ; i != list_stmt->end() ; ++i)
@@ -113,31 +117,31 @@ void Compiler::visitListStmt(ListStmt *list_stmt)
 }
 
 
-void Compiler::visitInteger(Integer x)
+void CompilerJVM::visitInteger(Integer x)
 {
   /* Code for Integer Goes Here */
   printf("Hello World from Integer!\n");
 }
 
-void Compiler::visitChar(Char x)
+void CompilerJVM::visitChar(Char x)
 {
   /* Code for Char Goes Here */
   printf("Hello World from Char!\n");
 }
 
-void Compiler::visitDouble(Double x)
+void CompilerJVM::visitDouble(Double x)
 {
   /* Code for Double Goes Here */
   printf("Hello World from visitDouble!\n");
 }
 
-void Compiler::visitString(String x)
+void CompilerJVM::visitString(String x)
 {
   /* Code for String Goes Here */
   printf("Hello World from visitString!\n");
 }
 
-void Compiler::visitIdent(Ident x)
+void CompilerJVM::visitIdent(Ident x)
 {
   /* Code for Ident Goes Here */
   printf("Hello World from Ident!\n");
