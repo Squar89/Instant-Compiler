@@ -251,13 +251,6 @@ void PrintAbsyn::visitInteger(Integer i)
   bufAppend(tmp);
 }
 
-void PrintAbsyn::visitDouble(Double d)
-{
-  char tmp[16];
-  sprintf(tmp, "%g", d);
-  bufAppend(tmp);
-}
-
 void PrintAbsyn::visitChar(Char c)
 {
   bufAppend('\'');
@@ -401,12 +394,6 @@ void ShowAbsyn::visitInteger(Integer i)
 {
   char tmp[16];
   sprintf(tmp, "%d", i);
-  bufAppend(tmp);
-}
-void ShowAbsyn::visitDouble(Double d)
-{
-  char tmp[16];
-  sprintf(tmp, "%g", d);
   bufAppend(tmp);
 }
 void ShowAbsyn::visitChar(Char c)

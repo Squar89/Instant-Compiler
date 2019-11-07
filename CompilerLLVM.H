@@ -23,9 +23,6 @@ public:
   void visitListStmt(ListStmt *p);
 
   void visitInteger(Integer x);
-  void visitChar(Char x);
-  void visitDouble(Double x);
-  void visitString(String x);
   void visitIdent(Ident x);
 };
 

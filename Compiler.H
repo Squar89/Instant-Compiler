@@ -25,9 +25,6 @@ public:
   virtual void visitListStmt(ListStmt *p) = 0;
 
   virtual void visitInteger(Integer x) = 0;
-  virtual void visitChar(Char x) = 0;
-  virtual void visitDouble(Double x) = 0;
-  virtual void visitString(String x) = 0;
   virtual void visitIdent(Ident x) = 0;
 
 /* buffer and functions related to buffer storing result */

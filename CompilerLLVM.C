@@ -102,7 +102,6 @@ void CompilerLLVM::visitExpVar(ExpVar *exp_var)
 
 }
 
-
 void CompilerLLVM::visitListStmt(ListStmt *list_stmt)
 {
   printf("Hello World from ListStmt!\n");
@@ -112,29 +111,10 @@ void CompilerLLVM::visitListStmt(ListStmt *list_stmt)
   }
 }
 
-
 void CompilerLLVM::visitInteger(Integer x)
 {
   /* Code for Integer Goes Here */
   printf("Hello World from Integer!\n");
-}
-
-void CompilerLLVM::visitChar(Char x)
-{
-  /* Code for Char Goes Here */
-  printf("Hello World from Char!\n");
-}
-
-void CompilerLLVM::visitDouble(Double x)
-{
-  /* Code for Double Goes Here */
-  printf("Hello World from visitDouble!\n");
-}
-
-void CompilerLLVM::visitString(String x)
-{
-  /* Code for String Goes Here */
-  printf("Hello World from visitString!\n");
 }
 
 void CompilerLLVM::visitIdent(Ident x)

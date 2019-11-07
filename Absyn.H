@@ -10,7 +10,6 @@
 
 typedef int Integer;
 typedef char Char;
-typedef double Double;
 typedef std::string String;
 typedef std::string Ident;
 
@@ -55,9 +54,6 @@ public:
 
 
   virtual void visitInteger(Integer x) = 0;
-  virtual void visitChar(Char x) = 0;
-  virtual void visitDouble(Double x) = 0;
-  virtual void visitString(String x) = 0;
   virtual void visitIdent(Ident x) = 0;
 
 };

@@ -44,7 +44,6 @@ class PrintAbsyn : public Visitor
   void visitExpVar(ExpVar *p);
 
   void visitInteger(Integer i);
-  void visitDouble(Double d);
   void visitChar(Char c);
   void visitString(String s);
   void visitIdent(String s);
@@ -139,7 +138,6 @@ class ShowAbsyn : public Visitor
   void visitExpVar(ExpVar *p);
 
   void visitInteger(Integer i);
-  void visitDouble(Double d);
   void visitChar(Char c);
   void visitString(String s);
   void visitIdent(String s);

@@ -24,9 +24,6 @@ public:
   void visitListStmt(ListStmt *p);
 
   void visitInteger(Integer x);
-  void visitChar(Char x);
-  void visitDouble(Double x);
-  void visitString(String x);
   void visitIdent(Ident x);
 
 protected:
@@ -35,6 +32,8 @@ protected:
                              ".method public static main([Ljava/lang/String;)V\n"
                              /* TODO add counting stack max size */
                              ".limit stack 2000\n";
+
+  const std::string footer = "\nreturn\n\n.end method\n";
 };
 
 #endif /* COMPILERJVM_HEADER */
