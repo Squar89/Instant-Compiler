@@ -4,13 +4,19 @@
    List->accept() does NOT traverse the list. This allows different
    algorithms to use context information differently. */
 
-#include "Skeleton.H"
+#include "Compiler.H"
+#include "CompilerJVM.H"
 
-void Skeleton::visitProgram(Program *t) {} //abstract class
-void Skeleton::visitStmt(Stmt *t) {} //abstract class
-void Skeleton::visitExp(Exp *t) {} //abstract class
+char *Compiler::compile(Visitable *v) {
+  //TODO
+  return buf_;
+}
 
-void Skeleton::visitProg(Prog *prog)
+void Compiler::visitProgram(Program *t) {} //abstract class
+void Compiler::visitStmt(Stmt *t) {} //abstract class
+void Compiler::visitExp(Exp *t) {} //abstract class
+
+void Compiler::visitProg(Prog *prog)
 {
   /* Code For Prog Goes Here */
   printf("Hello World from Prog!\n");
@@ -19,7 +25,7 @@ void Skeleton::visitProg(Prog *prog)
 
 }
 
-void Skeleton::visitSAss(SAss *s_ass)
+void Compiler::visitSAss(SAss *s_ass)
 {
   /* Code For SAss Goes Here */
   printf("Hello World from SAss!\n");
@@ -29,7 +35,7 @@ void Skeleton::visitSAss(SAss *s_ass)
 
 }
 
-void Skeleton::visitSExp(SExp *s_exp)
+void Compiler::visitSExp(SExp *s_exp)
 {
   /* Code For SExp Goes Here */
   printf("Hello World from SExp!\n");
@@ -38,7 +44,7 @@ void Skeleton::visitSExp(SExp *s_exp)
 
 }
 
-void Skeleton::visitExpAdd(ExpAdd *exp_add)
+void Compiler::visitExpAdd(ExpAdd *exp_add)
 {
   /* Code For ExpAdd Goes Here */
   printf("Hello World from ExpAdd!\n");
@@ -48,7 +54,7 @@ void Skeleton::visitExpAdd(ExpAdd *exp_add)
 
 }
 
-void Skeleton::visitExpSub(ExpSub *exp_sub)
+void Compiler::visitExpSub(ExpSub *exp_sub)
 {
   /* Code For ExpSub Goes Here */
   printf("Hello World from ExpSub!\n");
@@ -58,7 +64,7 @@ void Skeleton::visitExpSub(ExpSub *exp_sub)
 
 }
 
-void Skeleton::visitExpMul(ExpMul *exp_mul)
+void Compiler::visitExpMul(ExpMul *exp_mul)
 {
   /* Code For ExpMul Goes Here */
   printf("Hello World from ExpMul!\n");
@@ -68,7 +74,7 @@ void Skeleton::visitExpMul(ExpMul *exp_mul)
 
 }
 
-void Skeleton::visitExpDiv(ExpDiv *exp_div)
+void Compiler::visitExpDiv(ExpDiv *exp_div)
 {
   /* Code For ExpDiv Goes Here */
   printf("Hello World from ExpDiv!\n");
@@ -78,7 +84,7 @@ void Skeleton::visitExpDiv(ExpDiv *exp_div)
 
 }
 
-void Skeleton::visitExpLit(ExpLit *exp_lit)
+void Compiler::visitExpLit(ExpLit *exp_lit)
 {
   /* Code For ExpLit Goes Here */
   printf("Hello World from ExpLit!\n");
@@ -87,7 +93,7 @@ void Skeleton::visitExpLit(ExpLit *exp_lit)
 
 }
 
-void Skeleton::visitExpVar(ExpVar *exp_var)
+void Compiler::visitExpVar(ExpVar *exp_var)
 {
   /* Code For ExpVar Goes Here */
   printf("Hello World from ExpVar!\n");
@@ -97,7 +103,7 @@ void Skeleton::visitExpVar(ExpVar *exp_var)
 }
 
 
-void Skeleton::visitListStmt(ListStmt *list_stmt)
+void Compiler::visitListStmt(ListStmt *list_stmt)
 {
   printf("Hello World from ListStmt!\n");
   for (ListStmt::iterator i = list_stmt->begin() ; i != list_stmt->end() ; ++i)
@@ -107,31 +113,31 @@ void Skeleton::visitListStmt(ListStmt *list_stmt)
 }
 
 
-void Skeleton::visitInteger(Integer x)
+void Compiler::visitInteger(Integer x)
 {
   /* Code for Integer Goes Here */
   printf("Hello World from Integer!\n");
 }
 
-void Skeleton::visitChar(Char x)
+void Compiler::visitChar(Char x)
 {
   /* Code for Char Goes Here */
   printf("Hello World from Char!\n");
 }
 
-void Skeleton::visitDouble(Double x)
+void Compiler::visitDouble(Double x)
 {
   /* Code for Double Goes Here */
   printf("Hello World from visitDouble!\n");
 }
 
-void Skeleton::visitString(String x)
+void Compiler::visitString(String x)
 {
   /* Code for String Goes Here */
   printf("Hello World from visitString!\n");
 }
 
-void Skeleton::visitIdent(Ident x)
+void Compiler::visitIdent(Ident x)
 {
   /* Code for Ident Goes Here */
   printf("Hello World from Ident!\n");

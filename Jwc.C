@@ -2,7 +2,9 @@
 #include <string.h>
 #include "Parser.H"
 #include "Printer.H"
-#include "Skeleton.H"
+#include "Compiler.H"
+#include "CompilerJVM.H"
+#include "CompilerLLVM.H"
 
 /* option string lengths used for strncmp */
 #define JVM_OPT_LENGTH 5
@@ -24,6 +26,8 @@ int main(int argc, char ** argv) {
   int destLanguage;
   FILE *input;
   char *fileName = NULL;
+  char *result;
+  Compiler *compiler;
 
   if (argc > 1) {
     /* set destination language */
@@ -38,7 +42,7 @@ int main(int argc, char ** argv) {
       return 1;
     }
 
-    /* set input source to specified file or stdin otherwise*/
+    /* set input source to specified file or stdin otherwise */
     if (argc > 2) {
       fileName = argv[2];
       input = fopen(fileName, "r");
@@ -64,9 +68,16 @@ int main(int argc, char ** argv) {
     printf("%s\n\n", p->print(parseTree));
   }
 
-  /* Setup our visitor and compile parsed input */
-  Skeleton *skeleton = new Skeleton();
-  skeleton->visitProg((Prog*) parseTree);
+  /* Setup our compiler and compile parsed input */
+  if (destLanguage == JVM_OPTION) {
+    compiler = new CompilerJVM();
+  }
+  else /* destLanguage == LLVM_OPTION */ {
+    compiler = new CompilerLLVM();
+  }
+  result = compiler->compile(parseTree);
+
+  printf("%s", result);
 
 
 
