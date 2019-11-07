@@ -16,14 +16,14 @@
 
 /* usage instructions */
 void usage() {
-  printf("usage: ./jwc -jvm|-llvm (file name)\n");
+  printf("usage: ./jwc -jvm | -llvm (file name)\n\n");
   printf("\t--help\t\tDisplay this help message.\n");
   printf("\t-jvm OR -llvm Specify destination language\n");
   printf("\t(file name)\t\tParse content of file. Optional - if no file is provided stdin will be used as input source\n");
 }
 
 int main(int argc, char ** argv) {
-  int destLanguage = JVM_OPTION;
+  int destLanguage;
   FILE *input;
   char *fileName = NULL;
   char *result;
@@ -56,7 +56,8 @@ int main(int argc, char ** argv) {
     }
   }
   else {
-    input = stdin;
+    usage();
+    return 1;
   }
 
   /* parse the supplied input into a Program variable */
@@ -78,7 +79,7 @@ int main(int argc, char ** argv) {
     compiler = new CompilerJVM();
   }
   else /* destLanguage == LLVM_OPTION */ {
-    compiler = new CompilerJVM();
+    compiler = new CompilerLLVM();
   }
   result = compiler->compile(parseTree);
   
