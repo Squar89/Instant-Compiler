@@ -7,17 +7,27 @@
 #include "Compiler.H"
 #include "CompilerJVM.H"
 
-char *CompilerJVM::compile(Visitable *v) {
-  bufReset();
-  this->storeMap.clear();
-  this->localCount = 0;
-  bufAppend(header);
+void CompilerJVM::countStack(int change)
+{
+  this->stackCurrent += change;
+  if (this->stackCurrent > this->stackMax) {
+    this->stackMax = this->stackCurrent;
+  }
+}
 
+char *CompilerJVM::compile(Visitable *v)
+{
+  /* Go through all of the statements appending jvm commands to the buffer */
   visitProg((Prog*) v);
 
-  bufAppend(footer);
+  /* Set .limits for stack size and number of local variables */
+  header += ".limit stack ";
+  header += std::to_string(this->stackMax);
+  header += "\n.limit locals ";
+  header += std::to_string(this->localCount > 0 ? this->localCount : 1);
+  header += "\n\n";
 
-  return buf_;
+  return getResult(header.c_str(), footer.c_str());
 }
 
 void CompilerJVM::visitProgram(Program *t) {} //abstract class
@@ -26,10 +36,14 @@ void CompilerJVM::visitExp(Exp *t) {} //abstract class
 
 void CompilerJVM::visitProg(Prog *prog)
 {
-  /* Code For Prog Goes Here */
+  /* reset buffer and all the helper objects/variables */
+  bufReset();
+  this->storeMap.clear();
+  this->localCount = 0;
+  this->stackCurrent = 0;
+  this->stackMax = 2;
 
   prog->liststmt_->accept(this);
-
 }
 
 void CompilerJVM::visitSAss(SAss *s_ass)
@@ -43,8 +57,10 @@ void CompilerJVM::visitSAss(SAss *s_ass)
     this->localCount++;
   }
 
-  /* Get ident index and append store command */
+  /* Get Ident index and append store command */
   int index = this->storeMap.at(s_ass->ident_);
+
+  countStack(-1);
 
   bufAppend("istore");
   if (index <= MAX_ISTORE) {
@@ -59,10 +75,13 @@ void CompilerJVM::visitSAss(SAss *s_ass)
 
 void CompilerJVM::visitSExp(SExp *s_exp)
 {
-  /* Code For SExp Goes Here */
+  countStack(1);
+  bufAppend("\ngetstatic java/lang/System/out Ljava/io/PrintStream;\n");
 
   s_exp->exp_->accept(this);
 
+  countStack(-2);
+  bufAppend("invokevirtual java/io/PrintStream/println(I)V\n");
 }
 
 void CompilerJVM::visitExpAdd(ExpAdd *exp_add)
@@ -70,6 +89,7 @@ void CompilerJVM::visitExpAdd(ExpAdd *exp_add)
   exp_add->exp_1->accept(this);
   exp_add->exp_2->accept(this);
 
+  countStack(-1);
   bufAppend("iadd\n");
 }
 
@@ -78,6 +98,7 @@ void CompilerJVM::visitExpSub(ExpSub *exp_sub)
   exp_sub->exp_1->accept(this);
   exp_sub->exp_2->accept(this);
 
+  countStack(-1);
   bufAppend("isub\n");
 }
 
@@ -86,6 +107,7 @@ void CompilerJVM::visitExpMul(ExpMul *exp_mul)
   exp_mul->exp_1->accept(this);
   exp_mul->exp_2->accept(this);
 
+  countStack(-1);
   bufAppend("imul\n");
 }
 
@@ -94,15 +116,13 @@ void CompilerJVM::visitExpDiv(ExpDiv *exp_div)
   exp_div->exp_1->accept(this);
   exp_div->exp_2->accept(this);
 
+  countStack(-1);
   bufAppend("idiv\n");
 }
 
 void CompilerJVM::visitExpLit(ExpLit *exp_lit)
 {
-  /* Code For ExpLit Goes Here */
-
   visitInteger(exp_lit->integer_);
-
 }
 
 void CompilerJVM::visitExpVar(ExpVar *exp_var)
@@ -116,6 +136,8 @@ void CompilerJVM::visitExpVar(ExpVar *exp_var)
 
   /* Get ident index and append load command */
   int index = this->storeMap.at(exp_var->ident_);
+
+  countStack(1);
 
   bufAppend("iload");
   if (index <= MAX_ILOAD) {
@@ -139,6 +161,8 @@ void CompilerJVM::visitListStmt(ListStmt *list_stmt)
 
 void CompilerJVM::visitInteger(Integer x)
 {
+  countStack(1);
+
   if (x < 0) {
     throw "Negative integer explicitly used in expression";
   }
@@ -159,10 +183,4 @@ void CompilerJVM::visitInteger(Integer x)
   bufAppend("\n");
 }
 
-void CompilerJVM::visitIdent(Ident x)
-{
-  /* Code for Ident Goes Here */
-}
-
-
-
+void CompilerJVM::visitIdent(Ident x) {}

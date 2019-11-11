@@ -1,6 +1,7 @@
 #ifndef COMPILER_HEADER
 #define COMPILER_HEADER
 
+#include <cstring>
 #include "Absyn.H"
 
 #define BUFFER_INITIAL 2000
@@ -29,10 +30,31 @@ public:
 
 /* buffer and functions related to buffer storing result */
 protected:
-  char *buf_;
+  char *buf_, *result;
   int cur_, buf_size;
 
-void inline bufAppend(const char *s)
+  char *getResult(const char *header, const char *footer)
+  {
+    int lenHeader, lenFooter, resultSize;
+    lenHeader = strlen(header);
+    lenFooter = strlen(footer);
+    resultSize = lenHeader + cur_ + lenFooter;
+
+    result = (char *) malloc(resultSize);
+    if (!result) {
+      fprintf(stderr, "Error: Out of memory while allocating buffer!\n");
+      exit(1);
+    }
+    memset(result, 0, resultSize);
+
+    strcpy(result, header);
+    strcat(result, buf_);
+    strcat(result, footer);
+
+    return result;
+  }
+
+  void inline bufAppend(const char *s)
   {
     int len = strlen(s);
     while (cur_ + len >= buf_size)
@@ -65,6 +87,7 @@ void inline bufAppend(const char *s)
     const char *s = str.c_str();
     bufAppend(s);
   }
+
   void inline bufReset(void)
   {
     if (buf_) free(buf_);
@@ -93,10 +116,6 @@ void inline bufAppend(const char *s)
     }
     buf_ = temp;
   }
-
-//TODO probably some protected store map
-//TODO stack counter?
 };
-
 
 #endif

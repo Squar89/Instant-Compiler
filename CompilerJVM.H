@@ -34,17 +34,16 @@ public:
   void visitIdent(Ident x);
 
 protected:
-  const std::string header = ".class public Instant\n.super java/lang/Object\n\n.method public <init>()V\naload_0\n"
-                             "invokespecial java/lang/Object/<init>()V\nreturn\n.end method\n\n"
-                             ".method public static main([Ljava/lang/String;)V\n"
-                             /* TODO add counting stack max size */
-                             ".limit stack 2000\n.limit locals 20\n";
+  void countStack(int change);
+  std::string header = ".class public Instant\n.super java/lang/Object\n\n.method public <init>()V\naload_0\n"
+                        "invokespecial java/lang/Object/<init>()V\nreturn\n.end method\n\n"
+                        ".method public static main([Ljava/lang/String;)V\n";
 
-  const std::string footer = "\ngetstatic java/lang/System/out Ljava/io/PrintStream;\nswap\n"
-                             "invokevirtual java/io/PrintStream/println(I)V\n\nreturn\n.end method\n";
+  std::string footer = "\nreturn\n.end method\n";
 
   std::unordered_map <Ident, Integer> storeMap;
-  int localCount = 0;
+  int stackCurrent, stackMax, localCount;
+
 };
 
 #endif /* COMPILERJVM_HEADER */
