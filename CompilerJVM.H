@@ -1,8 +1,15 @@
 #ifndef COMPILERJVM_HEADER
 #define COMPILERJVM_HEADER
 
-#include "Compiler.H"
 #include <string>
+#include <unordered_map>
+#include "Compiler.H"
+
+#define MAX_ICONST  5
+#define MAX_BIPUSH  127
+#define MAX_SIPUSH  32767
+#define MAX_ISTORE  3
+#define MAX_ILOAD   3
 
 class CompilerJVM : public Compiler
 {
@@ -31,9 +38,13 @@ protected:
                              "invokespecial java/lang/Object/<init>()V\nreturn\n.end method\n\n"
                              ".method public static main([Ljava/lang/String;)V\n"
                              /* TODO add counting stack max size */
-                             ".limit stack 2000\n";
+                             ".limit stack 2000\n.limit locals 20\n";
 
-  const std::string footer = "\nreturn\n\n.end method\n";
+  const std::string footer = "\ngetstatic java/lang/System/out Ljava/io/PrintStream;\nswap\n"
+                             "invokevirtual java/io/PrintStream/println(I)V\n\nreturn\n.end method\n";
+
+  std::unordered_map <Ident, Integer> storeMap;
+  int localCount = 0;
 };
 
 #endif /* COMPILERJVM_HEADER */

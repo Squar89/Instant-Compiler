@@ -9,6 +9,8 @@
 
 char *CompilerJVM::compile(Visitable *v) {
   bufReset();
+  this->storeMap.clear();
+  this->localCount = 0;
   bufAppend(header);
 
   visitProg((Prog*) v);
@@ -32,11 +34,27 @@ void CompilerJVM::visitProg(Prog *prog)
 
 void CompilerJVM::visitSAss(SAss *s_ass)
 {
-  /* Code For SAss Goes Here */
-
   visitIdent(s_ass->ident_);
   s_ass->exp_->accept(this);
 
+  /* Check if Ident wasn't already stored and increment local variables counter if it wasn't */
+  if (this->storeMap.count(s_ass->ident_) == 0) {
+    this->storeMap.insert(std::make_pair(s_ass->ident_, this->localCount));
+    this->localCount++;
+  }
+
+  /* Get ident index and append store command */
+  int index = this->storeMap.at(s_ass->ident_);
+
+  bufAppend("istore");
+  if (index <= MAX_ISTORE) {
+    bufAppend("_");
+  }
+  else {
+    bufAppend(" ");
+  }
+  bufAppend(std::to_string(index));
+  bufAppend("\n");
 }
 
 void CompilerJVM::visitSExp(SExp *s_exp)
@@ -89,9 +107,25 @@ void CompilerJVM::visitExpLit(ExpLit *exp_lit)
 
 void CompilerJVM::visitExpVar(ExpVar *exp_var)
 {
-  /* Code For ExpVar Goes Here */
-
   visitIdent(exp_var->ident_);
+
+  /* Check if variable with such ident exists */
+  if (this->storeMap.count(exp_var->ident_) == 0) {
+    throw "Variable " + exp_var->ident_ + " used but not assigned";
+  }
+
+  /* Get ident index and append load command */
+  int index = this->storeMap.at(exp_var->ident_);
+
+  bufAppend("iload");
+  if (index <= MAX_ILOAD) {
+    bufAppend("_");
+  }
+  else {
+    bufAppend(" ");
+  }
+  bufAppend(std::to_string(index));
+  bufAppend("\n");
 
 }
 
@@ -108,13 +142,13 @@ void CompilerJVM::visitInteger(Integer x)
   if (x < 0) {
     throw "Negative integer explicitly used in expression";
   }
-  else if (x < 6) {
+  else if (x <= MAX_ICONST) {
     bufAppend("iconst_");
   }
-  else if (x < 128) {
+  else if (x <= MAX_BIPUSH) {
     bufAppend("bipush ");
   }
-  else if (x < 32768) {
+  else if (x <= MAX_SIPUSH) {
     bufAppend("sipush ");
   }
   else {
