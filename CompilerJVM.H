@@ -36,8 +36,8 @@ protected:
   void countStack(int change);
   void visitExpOpHelper(ExpOp *exp_op, bool silent, bool commutative);
   std::string header = ".class public Instant\n.super java/lang/Object\n\n.method public <init>()V\naload_0\n"
-                        "invokespecial java/lang/Object/<init>()V\nreturn\n.end method\n\n"
-                        ".method public static main([Ljava/lang/String;)V\n";
+                       "invokespecial java/lang/Object/<init>()V\nreturn\n.end method\n\n"
+                       ".method public static main([Ljava/lang/String;)V\n";
 
   std::string footer = "\nreturn\n.end method\n";
 
