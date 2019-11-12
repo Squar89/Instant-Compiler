@@ -48,6 +48,37 @@ Prog *Prog::clone() const
 
 
 
+/********************   ExpOp    ********************/
+ExpOp::ExpOp(Exp *p1, Exp *p2)
+{
+  exp_1 = p1;
+  exp_2 = p2;
+
+}
+
+ExpOp::ExpOp(const ExpOp & other)
+{
+  exp_1 = other.exp_1->clone();
+  exp_2 = other.exp_2->clone();
+
+}
+
+void ExpOp::swap(ExpOp & other)
+{
+  std::swap(exp_1, other.exp_1);
+  std::swap(exp_2, other.exp_2);
+
+}
+
+ExpOp::~ExpOp()
+{
+  delete(exp_1);
+  delete(exp_2);
+
+}
+
+
+
 /********************   SAss    ********************/
 SAss::SAss(Ident p1, Exp *p2)
 {
@@ -140,14 +171,14 @@ SExp *SExp::clone() const
 
 
 /********************   ExpAdd    ********************/
-ExpAdd::ExpAdd(Exp *p1, Exp *p2)
+ExpAdd::ExpAdd(Exp *p1, Exp *p2) : ExpOp::ExpOp(p1, p2)
 {
   exp_1 = p1;
   exp_2 = p2;
 
 }
 
-ExpAdd::ExpAdd(const ExpAdd & other)
+ExpAdd::ExpAdd(const ExpAdd & other) : ExpOp::ExpOp(other.exp_1, other.exp_2)
 {
   exp_1 = other.exp_1->clone();
   exp_2 = other.exp_2->clone();
@@ -188,14 +219,14 @@ ExpAdd *ExpAdd::clone() const
 
 
 /********************   ExpSub    ********************/
-ExpSub::ExpSub(Exp *p1, Exp *p2)
+ExpSub::ExpSub(Exp *p1, Exp *p2) : ExpOp::ExpOp(p1, p2)
 {
   exp_1 = p1;
   exp_2 = p2;
 
 }
 
-ExpSub::ExpSub(const ExpSub & other)
+ExpSub::ExpSub(const ExpSub & other) : ExpOp::ExpOp(other.exp_1, other.exp_2)
 {
   exp_1 = other.exp_1->clone();
   exp_2 = other.exp_2->clone();
@@ -236,14 +267,14 @@ ExpSub *ExpSub::clone() const
 
 
 /********************   ExpMul    ********************/
-ExpMul::ExpMul(Exp *p1, Exp *p2)
+ExpMul::ExpMul(Exp *p1, Exp *p2) : ExpOp::ExpOp(p1, p2)
 {
   exp_1 = p1;
   exp_2 = p2;
 
 }
 
-ExpMul::ExpMul(const ExpMul & other)
+ExpMul::ExpMul(const ExpMul & other) : ExpOp::ExpOp(other.exp_1, other.exp_2)
 {
   exp_1 = other.exp_1->clone();
   exp_2 = other.exp_2->clone();
@@ -284,14 +315,14 @@ ExpMul *ExpMul::clone() const
 
 
 /********************   ExpDiv    ********************/
-ExpDiv::ExpDiv(Exp *p1, Exp *p2)
+ExpDiv::ExpDiv(Exp *p1, Exp *p2) : ExpOp::ExpOp(p1, p2)
 {
   exp_1 = p1;
   exp_2 = p2;
 
 }
 
-ExpDiv::ExpDiv(const ExpDiv & other)
+ExpDiv::ExpDiv(const ExpDiv & other) : ExpOp::ExpOp(other.exp_1, other.exp_2)
 {
   exp_1 = other.exp_1->clone();
   exp_2 = other.exp_2->clone();

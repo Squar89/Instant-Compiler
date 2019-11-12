@@ -14,7 +14,7 @@ OBJS=Absyn.o Lexer.o Parser.o CompilerJVM.o CompilerLLVM.o
 all: Jwc
 
 clean:
-	rm -f *.o InstantLanguage.aux InstantLanguage.log InstantLanguage.pdf InstantLanguage.dvi InstantLanguage.ps InstantLanguage jwc
+	rm -f *.o InstantLanguage.aux InstantLanguage.log InstantLanguage.pdf InstantLanguage.dvi InstantLanguage.ps InstantLanguage jwc ./lib/Instant.class ./lib/test.j
 
 distclean: clean
 	rm -f Absyn.C Absyn.H Parser.C Parser.H Lexer.C CompilerJVM.C CompilerJVM.H CompilerLLVM.C CompilerLLVM.H Compiler.H Makefile InstantLanguage.l InstantLanguage.y InstantLanguage.tex 

@@ -11,6 +11,13 @@ class Compiler : public Visitor
 public:
   virtual char *compile(Visitable *v) = 0;
 
+  /* Visitor functions are extended by silent boolean.
+   * Silenced visitor only counts stack usage and doesn't change the enviroment in any other way.
+   * This is implemented so a compiler can optimize order in which expressions are executed.
+   * For example by knowing which subexpression from the two in add will require more stack space
+   * we can execute it first and minimize stack space used by add operation.
+   * Furthermore this can be extended to more than stack optimizing - whenever compiler needs to
+   * just "take a peek" into an expression without really executing it. */
   virtual void visitProgram(Program *p, bool silent) = 0;
   virtual void visitStmt(Stmt *p, bool silent) = 0;
   virtual void visitExp(Exp *p, bool silent) = 0;

@@ -24,6 +24,7 @@ class Exp;
 class Prog;
 class SAss;
 class SExp;
+class ExpOp;
 class ExpAdd;
 class ExpSub;
 class ExpMul;
@@ -87,6 +88,18 @@ public:
   virtual Exp *clone() const = 0;
 };
 
+class ExpOp : public Exp
+{
+public:
+  Exp *exp_1;
+  Exp *exp_2;
+
+  ExpOp(const ExpOp &);
+  ExpOp(Exp *p1, Exp *p2);
+  ~ExpOp();
+  void swap(ExpOp &);
+};
+
 
 
 class Prog : public Program
@@ -132,7 +145,7 @@ public:
   void swap(SExp &);
 };
 
-class ExpAdd : public Exp
+class ExpAdd : public ExpOp
 {
 public:
   Exp *exp_1;
@@ -147,7 +160,7 @@ public:
   void swap(ExpAdd &);
 };
 
-class ExpSub : public Exp
+class ExpSub : public ExpOp
 {
 public:
   Exp *exp_1;
@@ -162,7 +175,7 @@ public:
   void swap(ExpSub &);
 };
 
-class ExpMul : public Exp
+class ExpMul : public ExpOp
 {
 public:
   Exp *exp_1;
@@ -177,7 +190,7 @@ public:
   void swap(ExpMul &);
 };
 
-class ExpDiv : public Exp
+class ExpDiv : public ExpOp
 {
 public:
   Exp *exp_1;
