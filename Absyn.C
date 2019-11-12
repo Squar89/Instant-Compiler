@@ -36,9 +36,9 @@ Prog::~Prog()
 
 }
 
-void Prog::accept(Visitor *v)
+void Prog::accept(Visitor *v, bool silent)
 {
-  v->visitProg(this);
+  v->visitProg(this, silent);
 }
 
 Prog *Prog::clone() const
@@ -83,9 +83,9 @@ SAss::~SAss()
 
 }
 
-void SAss::accept(Visitor *v)
+void SAss::accept(Visitor *v, bool silent)
 {
-  v->visitSAss(this);
+  v->visitSAss(this, silent);
 }
 
 SAss *SAss::clone() const
@@ -127,9 +127,9 @@ SExp::~SExp()
 
 }
 
-void SExp::accept(Visitor *v)
+void SExp::accept(Visitor *v, bool silent)
 {
-  v->visitSExp(this);
+  v->visitSExp(this, silent);
 }
 
 SExp *SExp::clone() const
@@ -175,9 +175,9 @@ ExpAdd::~ExpAdd()
 
 }
 
-void ExpAdd::accept(Visitor *v)
+void ExpAdd::accept(Visitor *v, bool silent)
 {
-  v->visitExpAdd(this);
+  v->visitExpAdd(this, silent);
 }
 
 ExpAdd *ExpAdd::clone() const
@@ -223,9 +223,9 @@ ExpSub::~ExpSub()
 
 }
 
-void ExpSub::accept(Visitor *v)
+void ExpSub::accept(Visitor *v, bool silent)
 {
-  v->visitExpSub(this);
+  v->visitExpSub(this, silent);
 }
 
 ExpSub *ExpSub::clone() const
@@ -271,9 +271,9 @@ ExpMul::~ExpMul()
 
 }
 
-void ExpMul::accept(Visitor *v)
+void ExpMul::accept(Visitor *v, bool silent)
 {
-  v->visitExpMul(this);
+  v->visitExpMul(this, silent);
 }
 
 ExpMul *ExpMul::clone() const
@@ -319,9 +319,9 @@ ExpDiv::~ExpDiv()
 
 }
 
-void ExpDiv::accept(Visitor *v)
+void ExpDiv::accept(Visitor *v, bool silent)
 {
-  v->visitExpDiv(this);
+  v->visitExpDiv(this, silent);
 }
 
 ExpDiv *ExpDiv::clone() const
@@ -362,9 +362,9 @@ ExpLit::~ExpLit()
 
 }
 
-void ExpLit::accept(Visitor *v)
+void ExpLit::accept(Visitor *v, bool silent)
 {
-  v->visitExpLit(this);
+  v->visitExpLit(this, silent);
 }
 
 ExpLit *ExpLit::clone() const
@@ -405,9 +405,9 @@ ExpVar::~ExpVar()
 
 }
 
-void ExpVar::accept(Visitor *v)
+void ExpVar::accept(Visitor *v, bool silent)
 {
-  v->visitExpVar(this);
+  v->visitExpVar(this, silent);
 }
 
 ExpVar *ExpVar::clone() const
@@ -420,9 +420,9 @@ ExpVar *ExpVar::clone() const
 
 /********************   ListStmt    ********************/
 
-void ListStmt::accept(Visitor *v)
+void ListStmt::accept(Visitor *v, bool silent)
 {
-  v->visitListStmt(this);
+  v->visitListStmt(this, silent);
 }
 
 

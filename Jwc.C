@@ -1,7 +1,6 @@
 #include <cstdio>
 #include <string>
 #include "Parser.H"
-#include "Printer.H"
 #include "Compiler.H"
 #include "CompilerJVM.H"
 #include "CompilerLLVM.H"
@@ -62,17 +61,6 @@ int main(int argc, char ** argv) {
 
   /* parse the supplied input into a Program variable */
   Program *parseTree = pProgram(input);
-  /*
-  if (parseTree) {
-    printf("\nParse Succesful!\n");
-    printf("\n[Abstract Syntax]\n");
-    ShowAbsyn *s = new ShowAbsyn();
-    printf("%s\n\n", s->show(parseTree));
-    printf("[Linearized Tree]\n");
-    PrintAbsyn *p = new PrintAbsyn();
-    printf("%s\n\n", p->print(parseTree));
-  }
-  */
 
   /* Setup our compiler and compile parsed input */
   if (destLanguage == JVM_OPTION) {
@@ -81,11 +69,14 @@ int main(int argc, char ** argv) {
   else /* destLanguage == LLVM_OPTION */ {
     compiler = new CompilerLLVM();
   }
-  result = compiler->compile(parseTree);
-  
-  printf("%s", result);
 
+  /* Make sure that parse was successful */
+  if (parseTree) {
+    result = compiler->compile(parseTree);
+    printf("%s", result);
 
+    return 0;
+  }
 
-  return 0;
+  return 1;//parse was unsuccessful so we return 1
 }

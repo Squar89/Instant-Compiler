@@ -11,22 +11,21 @@ class Compiler : public Visitor
 public:
   virtual char *compile(Visitable *v) = 0;
 
-  virtual void visitProgram(Program *p) = 0;
-  virtual void visitStmt(Stmt *p) = 0;
-  virtual void visitExp(Exp *p) = 0;
-  virtual void visitProg(Prog *p) = 0;
-  virtual void visitSAss(SAss *p) = 0;
-  virtual void visitSExp(SExp *p) = 0;
-  virtual void visitExpAdd(ExpAdd *p) = 0;
-  virtual void visitExpSub(ExpSub *p) = 0;
-  virtual void visitExpMul(ExpMul *p) = 0;
-  virtual void visitExpDiv(ExpDiv *p) = 0;
-  virtual void visitExpLit(ExpLit *p) = 0;
-  virtual void visitExpVar(ExpVar *p) = 0;
-  virtual void visitListStmt(ListStmt *p) = 0;
-
-  virtual void visitInteger(Integer x) = 0;
-  virtual void visitIdent(Ident x) = 0;
+  virtual void visitProgram(Program *p, bool silent) = 0;
+  virtual void visitStmt(Stmt *p, bool silent) = 0;
+  virtual void visitExp(Exp *p, bool silent) = 0;
+  virtual void visitProg(Prog *p, bool silent) = 0;
+  virtual void visitSAss(SAss *p, bool silent) = 0;
+  virtual void visitSExp(SExp *p, bool silent) = 0;
+  virtual void visitExpAdd(ExpAdd *p, bool silent) = 0;
+  virtual void visitExpSub(ExpSub *p, bool silent) = 0;
+  virtual void visitExpMul(ExpMul *p, bool silent) = 0;
+  virtual void visitExpDiv(ExpDiv *p, bool silent) = 0;
+  virtual void visitExpLit(ExpLit *p, bool silent) = 0;
+  virtual void visitExpVar(ExpVar *p, bool silent) = 0;
+  virtual void visitListStmt(ListStmt *p, bool silent) = 0;
+  virtual void visitInteger(Integer x, bool silent) = 0;
+  virtual void visitIdent(Ident x, bool silent) = 0;
 
 /* buffer and functions related to buffer storing result */
 protected:

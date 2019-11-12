@@ -38,23 +38,21 @@ class Visitor
 {
 public:
   virtual ~Visitor() {}
-  virtual void visitProgram(Program *p) = 0;
-  virtual void visitStmt(Stmt *p) = 0;
-  virtual void visitExp(Exp *p) = 0;
-  virtual void visitProg(Prog *p) = 0;
-  virtual void visitSAss(SAss *p) = 0;
-  virtual void visitSExp(SExp *p) = 0;
-  virtual void visitExpAdd(ExpAdd *p) = 0;
-  virtual void visitExpSub(ExpSub *p) = 0;
-  virtual void visitExpMul(ExpMul *p) = 0;
-  virtual void visitExpDiv(ExpDiv *p) = 0;
-  virtual void visitExpLit(ExpLit *p) = 0;
-  virtual void visitExpVar(ExpVar *p) = 0;
-  virtual void visitListStmt(ListStmt *p) = 0;
-
-
-  virtual void visitInteger(Integer x) = 0;
-  virtual void visitIdent(Ident x) = 0;
+  virtual void visitProgram(Program *p, bool silent) = 0;
+  virtual void visitStmt(Stmt *p, bool silent) = 0;
+  virtual void visitExp(Exp *p, bool silent) = 0;
+  virtual void visitProg(Prog *p, bool silent) = 0;
+  virtual void visitSAss(SAss *p, bool silent) = 0;
+  virtual void visitSExp(SExp *p, bool silent) = 0;
+  virtual void visitExpAdd(ExpAdd *p, bool silent) = 0;
+  virtual void visitExpSub(ExpSub *p, bool silent) = 0;
+  virtual void visitExpMul(ExpMul *p, bool silent) = 0;
+  virtual void visitExpDiv(ExpDiv *p, bool silent) = 0;
+  virtual void visitExpLit(ExpLit *p, bool silent) = 0;
+  virtual void visitExpVar(ExpVar *p, bool silent) = 0;
+  virtual void visitListStmt(ListStmt *p, bool silent) = 0;
+  virtual void visitInteger(Integer x, bool silent) = 0;
+  virtual void visitIdent(Ident x, bool silent) = 0;
 
 };
 
@@ -63,7 +61,7 @@ class Visitable
 {
  public:
   virtual ~Visitable() {}
-  virtual void accept(Visitor *v) = 0;
+  virtual void accept(Visitor *v, bool silent) = 0;
 };
 
 
@@ -87,7 +85,6 @@ class Exp : public Visitable
 {
 public:
   virtual Exp *clone() const = 0;
-
 };
 
 
@@ -101,7 +98,7 @@ public:
   Prog &operator=(const Prog &);
   Prog(ListStmt *p1);
   ~Prog();
-  virtual void accept(Visitor *v);
+  virtual void accept(Visitor *v, bool silent);
   virtual Prog *clone() const;
   void swap(Prog &);
 };
@@ -116,7 +113,7 @@ public:
   SAss &operator=(const SAss &);
   SAss(Ident p1, Exp *p2);
   ~SAss();
-  virtual void accept(Visitor *v);
+  virtual void accept(Visitor *v, bool silent);
   virtual SAss *clone() const;
   void swap(SAss &);
 };
@@ -130,7 +127,7 @@ public:
   SExp &operator=(const SExp &);
   SExp(Exp *p1);
   ~SExp();
-  virtual void accept(Visitor *v);
+  virtual void accept(Visitor *v, bool silent);
   virtual SExp *clone() const;
   void swap(SExp &);
 };
@@ -145,7 +142,7 @@ public:
   ExpAdd &operator=(const ExpAdd &);
   ExpAdd(Exp *p1, Exp *p2);
   ~ExpAdd();
-  virtual void accept(Visitor *v);
+  virtual void accept(Visitor *v, bool silent);
   virtual ExpAdd *clone() const;
   void swap(ExpAdd &);
 };
@@ -160,7 +157,7 @@ public:
   ExpSub &operator=(const ExpSub &);
   ExpSub(Exp *p1, Exp *p2);
   ~ExpSub();
-  virtual void accept(Visitor *v);
+  virtual void accept(Visitor *v, bool silent);
   virtual ExpSub *clone() const;
   void swap(ExpSub &);
 };
@@ -175,7 +172,7 @@ public:
   ExpMul &operator=(const ExpMul &);
   ExpMul(Exp *p1, Exp *p2);
   ~ExpMul();
-  virtual void accept(Visitor *v);
+  virtual void accept(Visitor *v, bool silent);
   virtual ExpMul *clone() const;
   void swap(ExpMul &);
 };
@@ -190,7 +187,7 @@ public:
   ExpDiv &operator=(const ExpDiv &);
   ExpDiv(Exp *p1, Exp *p2);
   ~ExpDiv();
-  virtual void accept(Visitor *v);
+  virtual void accept(Visitor *v, bool silent);
   virtual ExpDiv *clone() const;
   void swap(ExpDiv &);
 };
@@ -204,7 +201,7 @@ public:
   ExpLit &operator=(const ExpLit &);
   ExpLit(Integer p1);
   ~ExpLit();
-  virtual void accept(Visitor *v);
+  virtual void accept(Visitor *v, bool silent);
   virtual ExpLit *clone() const;
   void swap(ExpLit &);
 };
@@ -218,7 +215,7 @@ public:
   ExpVar &operator=(const ExpVar &);
   ExpVar(Ident p1);
   ~ExpVar();
-  virtual void accept(Visitor *v);
+  virtual void accept(Visitor *v, bool silent);
   virtual ExpVar *clone() const;
   void swap(ExpVar &);
 };
@@ -228,7 +225,7 @@ public:
 class ListStmt : public Visitable, public std::vector<Stmt*>
 {
 public:
-  virtual void accept(Visitor *v);
+  virtual void accept(Visitor *v, bool silent);
   virtual ListStmt *clone() const;
 };
 

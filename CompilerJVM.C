@@ -18,7 +18,7 @@ void CompilerJVM::countStack(int change)
 char *CompilerJVM::compile(Visitable *v)
 {
   /* Go through all of the statements appending jvm commands to the buffer */
-  visitProg((Prog*) v);
+  visitProg((Prog*) v, false);
 
   /* Set .limits for stack size and number of local variables */
   header += ".limit stack ";
@@ -30,11 +30,11 @@ char *CompilerJVM::compile(Visitable *v)
   return getResult(header.c_str(), footer.c_str());
 }
 
-void CompilerJVM::visitProgram(Program *t) {} //abstract class
-void CompilerJVM::visitStmt(Stmt *t) {} //abstract class
-void CompilerJVM::visitExp(Exp *t) {} //abstract class
+void CompilerJVM::visitProgram(Program *t, bool silent) {} //abstract class
+void CompilerJVM::visitStmt(Stmt *t, bool silent) {} //abstract class
+void CompilerJVM::visitExp(Exp *t, bool silent) {} //abstract class
 
-void CompilerJVM::visitProg(Prog *prog)
+void CompilerJVM::visitProg(Prog *prog, bool silent)
 {
   /* reset buffer and all the helper objects/variables */
   bufReset();
@@ -43,13 +43,13 @@ void CompilerJVM::visitProg(Prog *prog)
   this->stackCurrent = 0;
   this->stackMax = 2;
 
-  prog->liststmt_->accept(this);
+  prog->liststmt_->accept(this, false);
 }
 
-void CompilerJVM::visitSAss(SAss *s_ass)
+void CompilerJVM::visitSAss(SAss *s_ass, bool silent)
 {
-  visitIdent(s_ass->ident_);
-  s_ass->exp_->accept(this);
+  visitIdent(s_ass->ident_, false);
+  s_ass->exp_->accept(this, false);
 
   /* Check if Ident wasn't already stored and increment local variables counter if it wasn't */
   if (this->storeMap.count(s_ass->ident_) == 0) {
@@ -73,61 +73,61 @@ void CompilerJVM::visitSAss(SAss *s_ass)
   bufAppend("\n");
 }
 
-void CompilerJVM::visitSExp(SExp *s_exp)
+void CompilerJVM::visitSExp(SExp *s_exp, bool silent)
 {
   countStack(1);
   bufAppend("\ngetstatic java/lang/System/out Ljava/io/PrintStream;\n");
 
-  s_exp->exp_->accept(this);
+  s_exp->exp_->accept(this, false);
 
   countStack(-2);
   bufAppend("invokevirtual java/io/PrintStream/println(I)V\n");
 }
 
-void CompilerJVM::visitExpAdd(ExpAdd *exp_add)
+void CompilerJVM::visitExpAdd(ExpAdd *exp_add, bool silent)
 {
-  exp_add->exp_1->accept(this);
-  exp_add->exp_2->accept(this);
+  exp_add->exp_1->accept(this, false);
+  exp_add->exp_2->accept(this, false);
 
   countStack(-1);
   bufAppend("iadd\n");
 }
 
-void CompilerJVM::visitExpSub(ExpSub *exp_sub)
+void CompilerJVM::visitExpSub(ExpSub *exp_sub, bool silent)
 {
-  exp_sub->exp_1->accept(this);
-  exp_sub->exp_2->accept(this);
+  exp_sub->exp_1->accept(this, false);
+  exp_sub->exp_2->accept(this, false);
 
   countStack(-1);
   bufAppend("isub\n");
 }
 
-void CompilerJVM::visitExpMul(ExpMul *exp_mul)
+void CompilerJVM::visitExpMul(ExpMul *exp_mul, bool silent)
 {
-  exp_mul->exp_1->accept(this);
-  exp_mul->exp_2->accept(this);
+  exp_mul->exp_1->accept(this, false);
+  exp_mul->exp_2->accept(this, false);
 
   countStack(-1);
   bufAppend("imul\n");
 }
 
-void CompilerJVM::visitExpDiv(ExpDiv *exp_div)
+void CompilerJVM::visitExpDiv(ExpDiv *exp_div, bool silent)
 {
-  exp_div->exp_1->accept(this);
-  exp_div->exp_2->accept(this);
+  exp_div->exp_1->accept(this, false);
+  exp_div->exp_2->accept(this, false);
 
   countStack(-1);
   bufAppend("idiv\n");
 }
 
-void CompilerJVM::visitExpLit(ExpLit *exp_lit)
+void CompilerJVM::visitExpLit(ExpLit *exp_lit, bool silent)
 {
-  visitInteger(exp_lit->integer_);
+  visitInteger(exp_lit->integer_, false);
 }
 
-void CompilerJVM::visitExpVar(ExpVar *exp_var)
+void CompilerJVM::visitExpVar(ExpVar *exp_var, bool silent)
 {
-  visitIdent(exp_var->ident_);
+  visitIdent(exp_var->ident_, false);
 
   /* Check if variable with such ident exists */
   if (this->storeMap.count(exp_var->ident_) == 0) {
@@ -151,15 +151,15 @@ void CompilerJVM::visitExpVar(ExpVar *exp_var)
 
 }
 
-void CompilerJVM::visitListStmt(ListStmt *list_stmt)
+void CompilerJVM::visitListStmt(ListStmt *list_stmt, bool silent)
 {
   for (ListStmt::iterator i = list_stmt->begin() ; i != list_stmt->end() ; ++i)
   {
-    (*i)->accept(this);
+    (*i)->accept(this, false);
   }
 }
 
-void CompilerJVM::visitInteger(Integer x)
+void CompilerJVM::visitInteger(Integer x, bool silent)
 {
   countStack(1);
 
@@ -183,4 +183,4 @@ void CompilerJVM::visitInteger(Integer x)
   bufAppend("\n");
 }
 
-void CompilerJVM::visitIdent(Ident x) {}
+void CompilerJVM::visitIdent(Ident x, bool silent) {}
