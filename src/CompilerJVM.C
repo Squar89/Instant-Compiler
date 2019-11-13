@@ -4,6 +4,7 @@
    List->accept() does NOT traverse the list. This allows different
    algorithms to use context information differently. */
 
+#include <iostream>
 #include "Compiler.H"
 #include "CompilerJVM.H"
 
@@ -103,18 +104,27 @@ void CompilerJVM::visitExpOpHelper(ExpOp *exp_op, bool silent, bool commutative)
   /* Save current stack counts to calculate stack usage by subexpressions */
   int stackCurrentSaved = this->stackCurrent;
   int stackMaxSaved = this->stackMax;
-  /* Set stack counts to zero to get local stack usage in subexpressions */
-  this->stackCurrent = 0;
-  this->stackMax = 0;
 
-  /* Silence first visitor - its purpose is to only count stack usage and nothing else */
-  exp_op->exp_1->accept(this, true);
-  stackUsage1 = this->stackMax;//remember first subexpression stack usage
+  if (exp_op->exp_1->stackUsage == -3) {
+    /* Set stack counts to zero to get local stack usage in subexpressions */
+    this->stackCurrent = 0;
+    this->stackMax = 0;
 
-  this->stackCurrent = 0;
-  this->stackMax = 0;
-  exp_op->exp_2->accept(this, true);
-  stackUsage2 = this->stackMax;//second subexpression stack usage
+    /* Silence first visitor - its purpose is to only count stack usage and nothing else */
+    exp_op->exp_1->accept(this, true);
+    exp_op->exp_1->stackUsage = this->stackMax;//remember first subexpression stack usage
+  }
+
+  if (exp_op->exp_2->stackUsage == -3) {
+    this->stackCurrent = 0;
+    this->stackMax = 0;
+
+    exp_op->exp_2->accept(this, true);
+    exp_op->exp_2->stackUsage = this->stackMax;//remember second subexpression stack usage
+  }
+
+  stackUsage1 = exp_op->exp_1->stackUsage;
+  stackUsage2 = exp_op->exp_2->stackUsage;
 
   /* If the operation was silenced, then we don't want to execute the suboperations once again
    * to maintain linear complexity. Instead we can calculate op stack usage from subexpressions

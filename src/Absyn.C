@@ -53,14 +53,12 @@ ExpOp::ExpOp(Exp *p1, Exp *p2)
 {
   exp_1 = p1;
   exp_2 = p2;
-
 }
 
 ExpOp::ExpOp(const ExpOp & other)
 {
   exp_1 = other.exp_1->clone();
   exp_2 = other.exp_2->clone();
-
 }
 
 void ExpOp::swap(ExpOp & other)

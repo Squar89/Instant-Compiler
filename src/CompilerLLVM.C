@@ -9,10 +9,19 @@
 
 char *CompilerLLVM::compile(Visitable *v)
 {
-  /* Go through all of the statements appending jvm commands to the buffer */
-  visitProg((Prog*) v, false);
+  /* reset buffer and all the helper objects/variables */
+  bufReset();
+  this->registerCurrent = 1;
+  this->variableCurrent = 1;
+  this->storeMap.clear();
+  this->lastResultWasLiteral = false;
 
-  return getResult(header.c_str(), footer.c_str());
+  bufAppend(header);
+  /* Go through all of the statements appending llvm commands to the buffer */
+  visitProg((Prog*) v, false);
+  bufAppend(footer);
+
+  return buf_;
 }
 
 void CompilerLLVM::visitProgram(Program *t, bool silent) {} //abstract class
@@ -21,13 +30,6 @@ void CompilerLLVM::visitExp(Exp *t, bool silent) {} //abstract class
 
 void CompilerLLVM::visitProg(Prog *prog, bool silent)
 {
-  /* reset buffer and all the helper objects/variables */
-  bufReset();
-  this->registerCurrent = 1;
-  this->variableCurrent = 1;
-  this->storeMap.clear();
-  this->lastResultWasLiteral = false;
-
   prog->liststmt_->accept(this, false);
 }
 

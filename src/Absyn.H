@@ -85,6 +85,7 @@ public:
 class Exp : public Visitable
 {
 public:
+  int stackUsage = -3;
   virtual Exp *clone() const = 0;
 };
 

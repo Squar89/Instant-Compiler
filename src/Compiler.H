@@ -4,7 +4,7 @@
 #include <cstring>
 #include "Absyn.H"
 
-#define BUFFER_INITIAL 2000
+#define BUFFER_INITIAL 500000
 
 class Compiler : public Visitor
 {
@@ -63,11 +63,13 @@ protected:
   void inline bufAppend(const char *s)
   {
     int len = strlen(s);
-    while (cur_ + len >= buf_size)
-    {
-      buf_size *= 2; /* Double the buffer size */
+    if (cur_ + len >= buf_size) {
+      while (cur_ + len >= buf_size)
+      {
+        buf_size *= 2; /* Double the buffer size */
+      }
+      resizeBuffer();
     }
-    resizeBuffer();
     for(int n = 0; n < len; n++)
     {
       buf_[cur_ + n] = s[n];
