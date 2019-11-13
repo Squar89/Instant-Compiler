@@ -9,7 +9,7 @@
 
 char *CompilerLLVM::compile(Visitable *v, std::string fileName)
 {
-  compile(v);
+  return compile(v);
 }
 
 char *CompilerLLVM::compile(Visitable *v)

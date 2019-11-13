@@ -18,7 +18,7 @@ void CompilerJVM::countStack(int change)
 
 char *CompilerJVM::compile(Visitable *v)
 {
-  compile(v, "Instant");
+  return compile(v, "Instant");
 }
 
 char *CompilerJVM::compile(Visitable *v, std::string fileName)
