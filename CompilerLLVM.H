@@ -27,12 +27,13 @@ public:
   void visitIdent(Ident x, bool silent);
 
 protected:
+  void visitExpOpHelper(ExpOp *exp_op, bool silent, std::string opCommand);
   std::string header = "declare void @printInt(i32)\ndefine i32 @main() {\n";
   std::string footer = "\nret i32 0\n}\n";
   int registerCurrent, variableCurrent;
   std::unordered_map <Ident, Integer> storeMap;
-  //bool lastResultWasLiteral;//this tells us if we should look for a value in last register or in int below
-  //int lastLiteralValue;
+  bool lastResultWasLiteral;//this tells us if we should look for a value in last register or in int below
+  int lastLiteralValue;
 };
 
 #endif /* COMPILERLLVM_HEADER */
