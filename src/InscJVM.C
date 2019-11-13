@@ -40,8 +40,8 @@ int main(int argc, char ** argv) {
 
   /* Input file should end with .ins - this will transform it to .j */
   int fileNameLength = strlen(fileName);
-  fileName[fileNameLength - 2] = 'j';
-  fileName[fileNameLength - 1] = '\0';
+  fileName[fileNameLength - 3] = 'j';
+  fileName[fileNameLength - 2] = '\0';
 
   /* Setup our compiler and compile parsed input */
   compiler = new CompilerJVM();

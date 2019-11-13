@@ -38,9 +38,9 @@ int main(int argc, char ** argv) {
 
   /* Input file should end with .ins - this will transform it to .ll */
   int fileNameLength = strlen(fileName);
+  fileName[fileNameLength - 3] = 'l';
   fileName[fileNameLength - 2] = 'l';
-  fileName[fileNameLength - 1] = 'l';
-  fileName[fileNameLength] = '\0';
+  fileName[fileNameLength - 1] = '\0';
 
   /* Setup our compiler and compile parsed input */
   compiler = new CompilerLLVM();
