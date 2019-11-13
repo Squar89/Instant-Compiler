@@ -1,5 +1,5 @@
 CC=g++
-CCFLAGS=-g -W -Wall -std=c++11
+CCFLAGS=-g -std=c++11
 
 FLEX=flex
 FLEX_OPTS=-PInstantLanguage
@@ -9,39 +9,42 @@ BISON_OPTS=-t -pInstantLanguage
 
 OBJS=Absyn.o Lexer.o Parser.o CompilerJVM.o CompilerLLVM.o
 
-.PHONY: clean distclean
+.PHONY: clean
 
-all: Jwc
+all: InscJVM InscLLVM
 
 clean:
-	rm -f *.o InstantLanguage.aux InstantLanguage.log InstantLanguage.pdf InstantLanguage.dvi InstantLanguage.ps InstantLanguage jwc ./lib/Instant.class ./lib/test.j
+	rm -f *.o src/*.o insc_jvm insc_llvm tests/*.class tests/*.j tests/*.bc tests/*.ll *.bc lib/*.bc
 
-distclean: clean
-	rm -f Absyn.C Absyn.H Parser.C Parser.H Lexer.C CompilerJVM.C CompilerJVM.H CompilerLLVM.C CompilerLLVM.H Compiler.H Makefile InstantLanguage.l InstantLanguage.y InstantLanguage.tex 
+InscJVM: ${OBJS} src/InscJVM.o
+	${CC} ${CCFLAGS} ${OBJS} src/InscJVM.o -o insc_jvm
 
-Jwc: ${OBJS} Jwc.o 
-	${CC} ${CCFLAGS} ${OBJS} Jwc.o -o jwc
+InscLLVM: ${OBJS} src/InscLLVM.o
+	${CC} ${CCFLAGS} ${OBJS} src/InscLLVM.o -o insc_llvm
 
-Absyn.o: Absyn.C Absyn.H
-	${CC} ${CCFLAGS} -c Absyn.C
+Absyn.o: src/Absyn.C src/Absyn.H
+	${CC} ${CCFLAGS} -c src/Absyn.C
 
-Lexer.C: InstantLanguage.l
-	${FLEX} -oLexer.C InstantLanguage.l
+Lexer.C: src/InstantLanguage.l
+	${FLEX} -o src/Lexer.C src/InstantLanguage.l
 
-Parser.C: InstantLanguage.y
-	${BISON} InstantLanguage.y -o Parser.C
+Parser.C: src/InstantLanguage.y
+	${BISON} src/InstantLanguage.y -o src/Parser.C
 
-Lexer.o: Lexer.C Parser.H
-	${CC} ${CCFLAGS} -c Lexer.C 
+Lexer.o: src/Lexer.C src/Parser.H
+	${CC} ${CCFLAGS} -c src/Lexer.C 
 
-Parser.o: Parser.C Absyn.H
-	${CC} ${CCFLAGS} -c Parser.C
+Parser.o: src/Parser.C src/Absyn.H
+	${CC} ${CCFLAGS} -c src/Parser.C
 
-CompilerJVM.o: Compiler.H CompilerJVM.C CompilerJVM.H Absyn.H
-	${CC} ${CCFLAGS} -Wno-unused-parameter -c CompilerJVM.C
+CompilerJVM.o: src/Compiler.H src/CompilerJVM.C src/CompilerJVM.H src/Absyn.H
+	${CC} ${CCFLAGS} -Wno-unused-parameter -c src/CompilerJVM.C
 
-CompilerLLVM.o: Compiler.H CompilerLLVM.C CompilerLLVM.H Absyn.H
-	${CC} ${CCFLAGS} -Wno-unused-parameter -c CompilerLLVM.C
+CompilerLLVM.o: src/Compiler.H src/CompilerLLVM.C src/CompilerLLVM.H src/Absyn.H
+	${CC} ${CCFLAGS} -Wno-unused-parameter -c src/CompilerLLVM.C
 
-Jwc.o: Jwc.C Parser.H Absyn.H
-	${CC} ${CCFLAGS} -c Jwc.C
+InscJVM.o: src/InscJVM.C src/Parser.H src/Absyn.H
+	${CC} ${CCFLAGS} -c src/InscJVM.C
+
+InscLLVM.o: src/InscLLVM.C src/Parser.H src/Absyn.H
+	${CC} ${CCFLAGS} -c InscLLVM.C
