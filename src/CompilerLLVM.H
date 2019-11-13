@@ -9,6 +9,7 @@ class CompilerLLVM : public Compiler
 {
 public:
   char *compile(Visitable *v);
+  char *compile(Visitable *v, std::string fileName);
 
   void visitProgram(Program *p, bool silent);
   void visitStmt(Stmt *p, bool silent);

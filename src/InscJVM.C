@@ -4,6 +4,7 @@
 #include <fstream>
 #include <cstdlib>
 #include <cstddef>
+#include <string>
 #include "Parser.H"
 #include "Compiler.H"
 #include "CompilerJVM.H"
@@ -43,26 +44,31 @@ int main(int argc, char ** argv) {
   fileName[fileNameLength - 3] = 'j';
   fileName[fileNameLength - 2] = '\0';
 
+  /* Extract directory and filename without it from provided file */
+  std::string directory = std::string(fileName);
+  std::string fileNameCropped;
+  std::size_t found = directory.find_last_of("/");
+  if (found == std::string::npos) {//directory not found
+    directory = ". ";
+    fileNameCropped = std::string(fileName);
+  }
+  else {
+    fileNameCropped = directory.substr(found + 1);
+    directory = directory.substr(0, found) + " ";
+  }
+  /* get rid of .j at the end of fileNameCropped */
+  fileNameCropped = fileNameCropped.substr(0, fileNameCropped.length() - 2);
+
   /* Setup our compiler and compile parsed input */
   compiler = new CompilerJVM();
   /* Make sure that parse was successful */
   if (parseTree) {
-    result = compiler->compile(parseTree);
+    result = compiler->compile(parseTree, fileNameCropped);
     
     /* Open file with name transformed to .j and write result to it */
     std::ofstream compiledSourceFile (fileName);
     compiledSourceFile << result << std::endl;
     compiledSourceFile.close();
-
-    /* Extract directory from provided file */
-    std::string directory = std::string(fileName);
-    std::size_t found = directory.find_last_of("/");
-    if (found == std::string::npos) {//directory not found
-      directory = ". ";
-    }
-    else {
-      directory = directory.substr(0, found) + " ";
-    }
 
     /* Execute command generating .class file using freshly compiled .j file */
     std::string jasminCallString = "java -jar ./lib/jasmin.jar -d " + directory + std::string(fileName);

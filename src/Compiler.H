@@ -10,6 +10,7 @@ class Compiler : public Visitor
 {
 public:
   virtual char *compile(Visitable *v) = 0;
+  virtual char *compile(Visitable *v, std::string fileName) = 0;
 
   /* Visitor functions are extended by silent boolean.
    * Silenced visitor only counts stack usage and doesn't change the enviroment in any other way.

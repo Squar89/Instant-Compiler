@@ -7,6 +7,11 @@
 #include "Compiler.H"
 #include "CompilerLLVM.H"
 
+char *CompilerLLVM::compile(Visitable *v, std::string fileName)
+{
+  compile(v);
+}
+
 char *CompilerLLVM::compile(Visitable *v)
 {
   /* reset buffer and all the helper objects/variables */
@@ -153,7 +158,7 @@ void CompilerLLVM::visitExpMul(ExpMul *exp_mul, bool silent)
 
 void CompilerLLVM::visitExpDiv(ExpDiv *exp_div, bool silent)
 {
-  visitExpOpHelper(exp_div, silent, "div");
+  visitExpOpHelper(exp_div, silent, "sdiv");
 }
 
 void CompilerLLVM::visitExpLit(ExpLit *exp_lit, bool silent)

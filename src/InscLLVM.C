@@ -54,7 +54,7 @@ int main(int argc, char ** argv) {
     compiledSourceFile.close();
 
     /* Execute command generating helper.bc file using freshly compiled .ll file */
-    std::string llvmasCallString = "/usr/local/opt/llvm/bin/llvm-as -o helper.bc " + std::string(fileName);
+    std::string llvmasCallString = "llvm-as -o helper.bc " + std::string(fileName);
     const char *llvmasCall = llvmasCallString.c_str();
     system(llvmasCall);
 
@@ -65,12 +65,12 @@ int main(int argc, char ** argv) {
     fileName[fileNameLength] = '\0';
 
     /* Compile our runtime helper library */
-    std::string llvmasLibCallString = "/usr/local/opt/llvm/bin/llvm-as ./lib/runtime.ll";
+    std::string llvmasLibCallString = "llvm-as ./lib/runtime.ll";
     const char *llvmasLibCall = llvmasLibCallString.c_str();
     system(llvmasLibCall);
     
     /* Link it */
-    std::string llvlinkCallString = "/usr/local/opt/llvm/bin/llvm-link -o " + std::string(fileName) + " helper.bc ./lib/runtime.bc";
+    std::string llvlinkCallString = "llvm-link -o " + std::string(fileName) + " helper.bc ./lib/runtime.bc";
     const char *llvlinkCall = llvlinkCallString.c_str();
     system(llvlinkCall);
 

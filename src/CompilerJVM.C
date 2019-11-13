@@ -18,6 +18,15 @@ void CompilerJVM::countStack(int change)
 
 char *CompilerJVM::compile(Visitable *v)
 {
+  compile(v, "Instant");
+}
+
+char *CompilerJVM::compile(Visitable *v, std::string fileName)
+{
+  /* Append filename to the header */
+  header += fileName;
+  header += header2;
+
   /* Go through all of the statements appending jvm commands to the buffer */
   visitProg((Prog*) v, false);
 
