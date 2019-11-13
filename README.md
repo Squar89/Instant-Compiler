@@ -17,6 +17,15 @@ coercions Exp 4;
 
 It can also be found in file InstantLanguage.cf inside /src directory
 
+# Usage
+Simply use ./make in the root directory and then:  
+To use JVM Compiler - "insc_jvm foo/bar/baz.ins"  
+To use LLVM Compiler - "insc_llvm foo/bar/baz.ins"  
+(Remember to use correct file extensions!)
+
+Those will create foo/bar/baz.j and foo/bar/baz.class files for JVM and foo/bar/baz.ll and foo/bar/baz.bc files for LLVM  
+To execute those use "java baz" and/or "lli baz.bc".
+
 # Optimizations used in compilers
 ## JVM Compiler
 ### Stack size optimization by expressions execution order
